@@ -81,6 +81,16 @@ User: "I want to build an AI gateway..."
 
 Aha Loop is designed to work with Claude Code. Each phase is implemented as a **Skill** that you can invoke directly.
 
+### Windows Setup
+
+If you're on Windows and symlinks aren't working (skills directory shows as text file), run:
+
+```powershell
+git config core.symlinks true
+Remove-Item ".claude\skills" -Force; cmd /c mklink /D ".claude\skills" "..\.agents\skills"
+Remove-Item ".codex\skills" -Force; cmd /c mklink /D ".codex\skills" "..\.agents\skills"
+```
+
 ### Phase 1-3: Planning (Manual with Claude Code)
 
 Run Claude Code in your project directory, then use skills via `/skill-name your description`:
@@ -133,7 +143,7 @@ AI decides when each phase is needed. All of these are autonomous decisions. No 
 
 ```
 AhaLoop/
-├── .claude/skills/             # AI skill library
+├── .agents/skills/             # AI skill library (shared)
 │   ├── vision-builder/         # Interactive vision building
 │   ├── vision/                 # Vision analysis
 │   ├── architect/              # Architecture design
@@ -141,6 +151,8 @@ AhaLoop/
 │   ├── research/               # Deep research
 │   ├── parallel-explore/       # Parallel exploration
 │   └── ...                     # Other skills
+├── .claude/skills/             # Symlink → .agents/skills
+├── .codex/skills/              # Symlink → .agents/skills
 ├── .god/                       # God Committee
 │   ├── config.json             # Committee configuration
 │   ├── council/                # Council chamber

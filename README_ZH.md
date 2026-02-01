@@ -81,6 +81,16 @@
 
 Aha Loop 设计为与 Claude Code 配合使用。每个阶段都实现为一个 **Skill**，可以直接调用。
 
+### Windows 设置
+
+如果你在 Windows 上且符号链接没有生效（skills 目录显示为文本文件），运行：
+
+```powershell
+git config core.symlinks true
+Remove-Item ".claude\skills" -Force; cmd /c mklink /D ".claude\skills" "..\.agents\skills"
+Remove-Item ".codex\skills" -Force; cmd /c mklink /D ".codex\skills" "..\.agents\skills"
+```
+
 ### 阶段 1-3：规划（在 Claude Code 中手动执行）
 
 在项目目录下运行 Claude Code，然后通过 `/skill名称 你的描述` 调用 skill：
@@ -133,7 +143,7 @@ AI 会自主判断每个阶段是否需要执行。所有这些都是自主决�
 
 ```
 AhaLoop/
-├── .claude/skills/             # AI 技能库
+├── .agents/skills/             # AI 技能库（共享）
 │   ├── vision-builder/         # 交互式愿景构建
 │   ├── vision/                 # 愿景分析
 │   ├── architect/              # 架构设计
@@ -141,6 +151,8 @@ AhaLoop/
 │   ├── research/               # 深度研究
 │   ├── parallel-explore/       # 并行探索
 │   └── ...                     # 其他技能
+├── .claude/skills/             # 符号链接 → .agents/skills
+├── .codex/skills/              # 符号链接 → .agents/skills
 ├── .god/                       # 上帝组委会
 │   ├── config.json             # 组委会配置
 │   ├── council/                # 议事厅
